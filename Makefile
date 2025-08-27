@@ -5,16 +5,22 @@ LIBS = $(shell pkg-config --libs gtk4)
 
 SRC = main.c
 
-all: clean main
+all: clean pokenux
 
 resources.c:
 	glib-compile-resources resources.xml --generate-source
 
-main: $(SRC)
-	gcc $(WARNINGS) -O2 $(CFLAGS) $(SRC) -o main $(LIBS) -Wl,--export-dynamic
+pokenux: $(SRC)
+	gcc $(WARNINGS) -O2 $(CFLAGS) $(SRC) -o pokenux $(LIBS) -Wl,--export-dynamic
 
 clean:
-	rm -rf main .cache resources.c
+	rm -rf pokenux .cache resources.c
+
+check:
+	cppcheck --language=c --enable=all --template=gcc --suppress=missingIncludeSystem .
 
 bear:
 	bear -- make
+
+vg:
+	valgrind --leak-check=full --show-leak-kinds=all ./pokenux
