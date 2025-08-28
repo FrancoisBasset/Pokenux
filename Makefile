@@ -1,9 +1,9 @@
 WARNINGS = -Wall -Wextra -Wshadow -Wconversion -pedantic
 
-CFLAGS = $(shell pkg-config --cflags gtk4)
-LIBS = $(shell pkg-config --libs gtk4)
+CFLAGS = $(shell pkg-config --cflags gtk4 libcurl)
+LIBS = $(shell pkg-config --libs gtk4 libcurl)
 
-SRC = main.c
+SRC = main.c api/tcgdex.c api/curl.c api/cJSON.c
 
 all: clean pokenux
 
