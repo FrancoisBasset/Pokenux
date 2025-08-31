@@ -64,6 +64,59 @@ static char** tcgdex_get_series_id(int *length) {
     return series_id;
 }
 
+static char* get_extension_url(char* id) {
+    char* url = get_url();
+    strcat(url, "sets/");
+    strcat(url, id);
+
+    return url;
+}
+
+static Extension tcgdex_get_extension(char* extension_id) {
+    char* url = get_extension_url(extension_id);
+
+    cJSON* jsonExtension = curl_get_json(url);
+
+    free(url);
+
+    char* id = cJSON_GetObjectItem(jsonExtension, "id")->valuestring;
+    char* name = cJSON_GetObjectItem(jsonExtension, "name")->valuestring;
+    
+    cJSON* jsonLogo = cJSON_GetObjectItem(jsonExtension, "logo");
+    char* logo = jsonLogo ? jsonLogo->valuestring : "";
+
+    cJSON* jsonSymbol = cJSON_GetObjectItem(jsonExtension, "symbol");
+    char* symbol = jsonSymbol ? jsonSymbol->valuestring : "";
+
+    cJSON* card_count = cJSON_GetObjectItem(jsonExtension, "cardCount");
+    int count_official = cJSON_GetObjectItem(card_count, "official")->valueint;
+    int count_total = cJSON_GetObjectItem(card_count, "total")->valueint;
+
+    char* release_date = cJSON_GetObjectItem(jsonExtension, "releaseDate")->valuestring;
+    
+    cJSON* jsonAbbreviation = cJSON_GetObjectItem(jsonExtension, "abbreviation");
+    char* abbreviation = "";
+    if (jsonAbbreviation) {
+        abbreviation = cJSON_GetObjectItem(jsonAbbreviation, "official")->valuestring;
+    }
+
+    Extension extension = {
+        .id = strdup(id),
+        .name = strdup(name),
+        .logo = strdup(logo),
+        .symbol = strdup(symbol),
+        .count_official = count_official,
+        .count_total = count_total,
+        .release_date = strdup(release_date),
+        .cards = NULL,
+        .abbreviation = strdup(abbreviation)
+    };
+
+    cJSON_Delete(jsonExtension);
+
+    return extension;
+}
+
 static Serie tcgdex_get_serie(char* serie_id) {
     char* url = get_serie_url(serie_id);
 
@@ -73,6 +126,9 @@ static Serie tcgdex_get_serie(char* serie_id) {
     cJSON* name = cJSON_GetObjectItem(jsonSerie, "name");
     cJSON* logo = cJSON_GetObjectItem(jsonSerie, "logo");
     cJSON* release_date = cJSON_GetObjectItem(jsonSerie, "releaseDate");
+    cJSON* jsonExtensions = cJSON_GetObjectItem(jsonSerie, "sets");
+
+    int extension_length = cJSON_GetArraySize(jsonExtensions);
 
     Serie serie;
     serie.id = strdup(id->valuestring);
@@ -87,8 +143,12 @@ static Serie tcgdex_get_serie(char* serie_id) {
     } else {
         serie.release_date = strdup("");
     }
-    serie.extensions = malloc(sizeof(Extension) * 0);
-    serie.extensions_length = 0;
+    serie.extensions = malloc(sizeof(Extension) * (size_t)extension_length);
+    for (int i = 0; i < extension_length; i++) {
+        cJSON* jsonExtension = cJSON_GetArrayItem(jsonExtensions, i);
+        serie.extensions[i] = tcgdex_get_extension(cJSON_GetObjectItem(jsonExtension, "id")->valuestring);
+    }
+    serie.extensions_length = extension_length;
 
     free(url);
     cJSON_Delete(jsonSerie);

@@ -17,4 +17,6 @@ typedef struct {
     char* abbreviation;
 } Extension;
 
+void extension_free(Extension extension);
+
 #endif

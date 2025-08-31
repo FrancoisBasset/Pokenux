@@ -14,4 +14,6 @@ typedef struct {
     int extensions_length;
 } Serie;
 
+void serie_free(Serie serie);
+
 #endif
