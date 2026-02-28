@@ -1,0 +1,17 @@
+Screen {
+    background: silver;
+}
+
+Label {
+    color: black;
+}
+
+Static {
+    width: auto;
+    margin: 1;
+    padding: 1;
+}
+
+MenuBar {
+    dock: bottom;
+}
