@@ -1,24 +1,27 @@
 from textual.app import ComposeResult
-from textual.screen import Screen
-from tcgdexsdk import TCGdex
-from textual.widgets import Label
+from tcgdexsdk import SerieResume
+from textual.message import Message
+from textual.reactive import reactive
+from textual.widget import Widget
+from textual.widgets import Button
 
-class SeriesScreen(Screen):
-    sdk = TCGdex('fr')
-    series: list[tuple[str, str, str]] = []
+from pokenux.services.tcgdex import TcgDexService
+
+class SeriesContent(Widget):
+    series: list[SerieResume] = reactive([], recompose=True)
 
     def on_mount(self):
-        self.series = self.get_series()
+        self.series = TcgDexService('fr').get_series()
+
+    class SerieSelected(Message):
+        def __init__(self, serie: SerieResume):
+            super().__init__()
+            self.serie = serie
 
     def compose(self) -> ComposeResult:
         for serie in self.series:
-            yield Label(serie[0])
+            yield Button(serie.name, id=serie.id)
 
-    def get_series(self) -> list:
-        series: list[tuple[str, str, str]] = []
-
-        for serie in self.sdk.serie.listSync():
-            self.notify(serie.id)
-            series.append((serie.id, serie.name, serie.logo))
-
-        return series
+    def on_button_pressed(self, event: Button.Pressed) -> None:
+        selected_serie = [serie for serie in self.series if serie.id == event.button.id]
+        self.post_message(self.SerieSelected(selected_serie[0]))

@@ -1,6 +1,6 @@
 from textual.app import ComposeResult
 from textual.screen import Screen
-from textual.widgets import Label, Select, Button
+from textual.widgets import Select, Button
 
 from pokenux.menu_bar import MenuBar
 

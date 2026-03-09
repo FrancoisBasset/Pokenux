@@ -1,45 +1,46 @@
-from textual import on
+from tcgdexsdk import Set, SerieResume
 from textual.app import ComposeResult
 from textual.reactive import reactive
 from textual.screen import Screen
-from textual.widgets import Button
+from textual.widgets import ContentSwitcher
 
-from pokenux.components.breadcrumb import Breadcrumb
-from pokenux.models.serie import Serie
-from pokenux.models.set import Set
+from pokenux.components.card_explorer_breadcrumb import CardExplorerBreadcrumb
+from pokenux.contents.series_content import SeriesContent
+from pokenux.contents.sets_content import SetsContent
+from pokenux.services.tcgdex import TcgDexService
 
 class CardExplorerScreen(Screen):
-    breadcrumb: Breadcrumb
-    series: list[Serie] = [
-        Serie('EV', 'Ecarlate et Violet'),
-        Serie('EB', 'Épée et Bouclier'),
-        Serie('SL', 'Soleil et Lune')
-    ]
-    selected_serie: Serie | None = reactive(None)
-    selected_set: Set | None = None
+    sdk = TcgDexService('fr')
+    serie: SerieResume | None = reactive(None)
+    set: Set | None = None
+
+    breadcrumb: CardExplorerBreadcrumb = None
+    content_switcher: ContentSwitcher = None
+    sets_content: SetsContent = None
 
     def on_mount(self):
-        self.breadcrumb = self.query_one('#breadcrumb', Breadcrumb)
+        self.breadcrumb = self.query_one(CardExplorerBreadcrumb)
+        self.content_switcher = self.query_one(ContentSwitcher)
+        self.sets_content = self.query_one(SetsContent)
 
     def compose(self) -> ComposeResult:
-        yield Breadcrumb(id='breadcrumb')
-        for serie in self.series:
-            yield Button(serie.name, id=serie.id)
+        yield CardExplorerBreadcrumb()
+        with ContentSwitcher(initial='series-content'):
+            yield SeriesContent(id='series-content')
+            yield SetsContent(id='sets-content')
 
-    @on(Button.Pressed, '#all_series_button')
-    def on_all_series_button_pressed(self):
-        self.selected_serie = None
+    def on_series_content_serie_selected(self, event: SeriesContent.SerieSelected) -> None:
+        self.serie = event.serie
 
-    def on_button_pressed(self, event: Button.Pressed):
-        if self.selected_serie is None and event.button.id != 'all_series_button':
-            self.selected_serie = [s for s in self.series if s.id == event.button.id][0]
-
-    def watch_selected_serie(self):
-        if self.selected_serie is None:
-            self.breadcrumb.buttons = [('all_series_button', 'Toutes les séries')]
-            for serie in self.series:
-                self.query_one('#' + serie.id, Button).display = True
+    def watch_serie(self):
+        if self.serie:
+            self.breadcrumb.serie = self.serie.name
+            self.sets_content.sets = self.sdk.get_sets(self.serie.id)
+            self.set = None
+            self.content_switcher.current = 'sets-content'
         else:
-            self.breadcrumb.buttons = [*self.breadcrumb.buttons, (self.selected_serie.id, self.selected_serie.name)]
-            for serie in self.series:
-                self.query_one('#' + serie.id, Button).display = False
+            self.content_switcher.current = 'series-content'
+
+    def watch_set(self):
+
+        pass

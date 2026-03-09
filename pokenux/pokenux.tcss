@@ -15,3 +15,7 @@ Static {
 MenuBar {
     dock: bottom;
 }
+
+ContentSwitcher {
+    height: 1fr;
+}

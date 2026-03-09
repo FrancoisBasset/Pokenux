@@ -1,13 +1,14 @@
-from tcgdexsdk import TCGdex
+from tcgdexsdk import TCGdex, SerieResume, SetResume, Serie
 
-from pokenux.models.serie import Serie
 
-def get_series():
-    series: list[Serie] = []
+class TcgDexService:
+    def __init__(self, language: str) -> None:
+        self.sdk = TCGdex(language)
 
-    sdk = TCGdex('fr')
+    def get_series(self) -> list[SerieResume]:
+        return self.sdk.serie.listSync()
 
-    for serie in sdk.serie.listSync():
-        series.append(Serie(serie.id, serie.name))#, serie.logo))
+    def get_sets(self, serie_id: str) -> list[SetResume]:
+        serie: Serie = self.sdk.serie.getSync(serie_id)
 
-    return series
+        return serie.sets

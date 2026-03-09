@@ -1,6 +1,5 @@
 from textual import on
 from textual.app import ComposeResult
-from textual.events import Click
 from textual.screen import Screen
 from textual.widgets import Label, Button
 
