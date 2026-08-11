@@ -1,0 +1,25 @@
+Header {
+    height: 3;
+    padding: 1;
+    text-style: bold;
+    color: red;
+    background: white;
+}
+
+Tabs {
+    height: 4;
+}
+
+Tab {
+    height: 3;
+    padding: 1 2;
+}
+
+Input {
+    margin: 1;
+    text-align: center;
+}
+
+Button {
+    margin: 1;
+}

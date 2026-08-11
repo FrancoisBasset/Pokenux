@@ -1,5 +1,3 @@
-import locale
-
 from pokenux.models.pokemon.pokemon import Pokemon
 from pokenux.models.tcg.card import Card
 from pokenux.models.tcg.serie import Serie
@@ -7,6 +5,7 @@ from pokenux.models.tcg.set import Set
 from pokenux.services.games import anagram, evolution
 from pokenux.services.pokedex import Pokedex
 from pokenux.services.tcg_library import TcgLibrary
+from pokenux.textual.pokenux import Pokenux
 
 
 def show_all():
@@ -151,8 +150,4 @@ def guess_pokemon_id():
 
 
 def main():
-    print("Running Pokenux...")
-
-    locale.setlocale(locale.LC_COLLATE, "fr_FR.UTF-8")
-
-    guess_pokemon_id()
+    Pokenux().run()

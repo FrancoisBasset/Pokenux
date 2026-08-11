@@ -11,6 +11,8 @@ requires-python = ">=3.14"
 dependencies = [
     "requests>=2.34.2,<3.0.0",
     "tcgdex-sdk>=2.3.0",
+    "textual>=8.2.8",
+    "tomlkit>=0.15.1",
 ]
 
 [project.scripts]

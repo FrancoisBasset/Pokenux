@@ -1,0 +1,24 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8"
+
+msgid "quit"
+msgstr "Quitter"
+
+msgid "parameters"
+msgstr "Paramètres"
+
+msgid "save"
+msgstr "Sauvegarder"
+
+msgid "new"
+msgstr "Nouveau"
+
+msgid "application_language"
+msgstr "Langue de l'application"
+
+msgid "tcg_language"
+msgstr "Langue du TCG"
+
+msgid "pokemon_language"
+msgstr "Langue des Pokémon"
