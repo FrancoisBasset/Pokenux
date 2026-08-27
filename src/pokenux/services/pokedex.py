@@ -1,16 +1,17 @@
 import locale
 
 from pokenux.models.pokemon.pokemon import Pokemon
-from pokenux.services import jsons
 
 import random
+
+from pokenux.services.user_data import UserData
 
 
 class Pokedex:
     all_pokemon: list[Pokemon]
 
     def __init__(self):
-        self.all_pokemon = jsons.get_all_pokemon_from_jsons()
+        self.all_pokemon = UserData.get_all_pokemon_from_jsons()
 
     def get_pokemon_by_id(self, id: int) -> Pokemon | None:
         pokemons: list[Pokemon] = [

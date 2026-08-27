@@ -12,6 +12,7 @@ dependencies = [
     "requests>=2.34.2,<3.0.0",
     "tcgdex-sdk>=2.3.0",
     "textual>=8.2.8",
+    "textual-image>=0.13.2",
     "tomlkit>=0.15.1",
 ]
 
