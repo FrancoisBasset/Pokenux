@@ -10,16 +10,13 @@ Tabs {
     height: 4;
 }
 
+#tabbed_content,
+#tabbed_content > ContentSwitcher,
+#tabbed_content > ContentSwitcher > TabPane {
+    height: 1fr;
+}
+
 Tab {
     height: 3;
     padding: 1 2;
-}
-
-Input {
-    margin: 1;
-    text-align: center;
-}
-
-Button {
-    margin: 1;
 }

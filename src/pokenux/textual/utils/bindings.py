@@ -5,8 +5,7 @@ from pokenux.textual.utils import i18n
 
 
 def get_main_bindings() -> list[Binding]:
-    UserData.init()
-    i18n.set_language(UserData.config_file.get("app_lang", "en"))
+    i18n.set_language(UserData.get_app_lang())
 
     return [
         Binding("q", "quit", i18n.trans("quit")),

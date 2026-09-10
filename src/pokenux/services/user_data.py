@@ -25,17 +25,10 @@ class UserData:
         if not Path.exists(UserData.path):
             Path.mkdir(UserData.path)
 
-        UserData.init_config()
-
-    @staticmethod
-    def init_config():
         if not Path.exists(UserData.config_path):
             Path.touch(UserData.config_path)
 
         UserData.config_file = tomlkit.load(open(UserData.config_path))
-        UserData.config_file.setdefault("app_lang", "en")
-        UserData.config_file.setdefault("pokemon_lang", "en")
-        UserData.config_file.setdefault("tcg_lang", "en")
 
     @staticmethod
     def assets_are_missing() -> bool:
@@ -46,7 +39,7 @@ class UserData:
 
     @staticmethod
     def download_assets(cancelled: Callable[[], bool]) -> bool:
-        url = "https://github.com/FrancoisBasset/pokenux/releases/download/1.0.0/pokemon-data-1.0.0.zip"
+        url = "https://github.com/FrancoisBasset/pokenux/releases/download/1.0.0/pokenux-data.zip"
 
         path = Path(UserData.path)
         zip_path = path / "pokemon-data.zip"
@@ -82,11 +75,45 @@ class UserData:
             tomlkit.dump(UserData.config_file, file)
 
     @staticmethod
-    def get_all_pokemon_from_jsons() -> list[Pokemon]:
+    def get_all_pokemon() -> list[Pokemon]:
         with open(UserData.path + "/assets/data/pokemon.json", "r") as f:
             return [Pokemon.from_dict(data) for data in json.load(f)]
 
     @staticmethod
-    def get_series_from_jsons(language: str) -> list[Serie]:
+    def get_all_series(language: str) -> list[Serie]:
         with open(f"{UserData.path}/assets/data/tcg_{language}.json", "r") as f:
             return [Serie.from_dict(data) for data in json.load(f)]
+
+    @staticmethod
+    def get_all_generations() -> list[str]:
+        with open(UserData.path + "/assets/data/generations.json", "r") as f:
+            return json.load(f)
+
+    @staticmethod
+    def get_all_types() -> list:
+        with open(UserData.path + "/assets/data/types.json", "r") as f:
+            return json.load(f)
+
+    @staticmethod
+    def get_app_lang() -> str:
+        return UserData.config_file.get("app_lang", "en")
+
+    @staticmethod
+    def get_pokemon_lang() -> str:
+        return UserData.config_file.get("pokemon_lang", "en")
+
+    @staticmethod
+    def get_tcg_lang() -> str:
+        return UserData.config_file.get("tcg_lang", "en")
+
+    @staticmethod
+    def set_app_lang(lang: str):
+        UserData.config_file["app_lang"] = lang
+
+    @staticmethod
+    def set_pokemon_lang(lang: str):
+        UserData.config_file["pokemon_lang"] = lang
+
+    @staticmethod
+    def set_tcg_lang(lang: str):
+        UserData.config_file["tcg_lang"] = lang

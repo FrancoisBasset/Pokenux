@@ -3,7 +3,7 @@ from typing import cast
 from textual.app import App
 from textual.widgets import TabPane, TabbedContent
 
-from pokenux.textual.utils import i18n
+from pokenux.textual.utils import enums, i18n
 from pokenux.textual.utils.bindings import get_main_bindings
 from textual.css.query import NoMatches
 
@@ -20,9 +20,22 @@ class Translator:
 
         self.app.refresh_bindings()
 
+        self._translate_inputs()
         self._translate_buttons()
         self._translate_panes()
         self._translate_labels()
+        self._translate_selects()
+
+    def _translate_selects(self):
+        for select in self.app.query("Select.i18n"):
+            if select.name:
+                select.prompt = i18n.trans(select.name)
+                select.set_options(getattr(enums, select.name)())
+
+    def _translate_inputs(self):
+        for input_widget in self.app.query("Input.i18n"):
+            if input_widget.name:
+                input_widget.placeholder = i18n.trans(input_widget.name)
 
     def _translate_labels(self):
         for label in self.app.query("Label.i18n"):

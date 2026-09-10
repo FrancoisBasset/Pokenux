@@ -1,20 +1,20 @@
 from textual.app import App, ComposeResult
 from textual.css.query import NoMatches
 from textual.widgets import Footer, Header, TabPane, TabbedContent
-from textual_image.widget import Image
 
-from pokenux.models.pokemon.pokemon import Pokemon
-from pokenux.services.pokedex import Pokedex
 from pokenux.services.user_data import UserData
 from pokenux.textual.utils import bindings, i18n
 from pokenux.textual.screens.fetching_screen import FetchingScreen
+from pokenux.textual.views.new_view import NewView
 from pokenux.textual.views.parameters_view import ParametersView
-from pokenux.textual.widgets.random_pokemon_widget import RandomPokemonWidget
 
 
 class Pokenux(App):
     BINDINGS = bindings.get_main_bindings()
-    CSS_PATH = "style.css"
+    CSS_PATH = [
+        "css/style.css",
+        "css/pokedex_view.css"
+    ]
 
 
     def on_mount(self):
@@ -24,13 +24,13 @@ class Pokenux(App):
         if UserData.assets_are_missing():
             self.push_screen(FetchingScreen(), callback=self.on_fetching_finished)
         else:
-            self.load_pokenux()
+            self.load_new_view()
 
     def compose(self) -> ComposeResult:
         yield Header(name="Pokenux", icon="◒")
 
         with TabbedContent(id="tabbed_content"):
-            yield TabPane("+", id="tab_new_tab")
+            yield TabPane("+", id="new_tab_tab")
 
         yield Footer()
 
@@ -39,11 +39,11 @@ class Pokenux(App):
             self.exit()
             return
 
-        self.load_pokenux()
+        self.load_new_view()
 
-    def load_pokenux(self) -> None:
-        self.query_one("#tab_new_tab", TabPane).mount(
-            RandomPokemonWidget(id="random_pokemon_widget"),
+    def load_new_view(self) -> None:
+        self.query_one("#new_tab_tab", TabPane).mount(
+            NewView(self.tabbed_content)
         )
 
     def action_close_tab(self, tab_id: str) -> None:
@@ -61,6 +61,6 @@ class Pokenux(App):
                 name="parameters",
                 classes="i18n",
             )
-            await self.tabbed_content.add_pane(parameter_view, before="tab_new_tab")
+            await self.tabbed_content.add_pane(parameter_view, before="new_tab_tab")
 
         self.tabbed_content.active = "parameters"

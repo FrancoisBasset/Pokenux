@@ -11,7 +11,7 @@ class Pokedex:
     all_pokemon: list[Pokemon]
 
     def __init__(self):
-        self.all_pokemon = UserData.get_all_pokemon_from_jsons()
+        self.all_pokemon = UserData.get_all_pokemon()
 
     def get_pokemon_by_id(self, id: int) -> Pokemon | None:
         pokemons: list[Pokemon] = [
@@ -44,3 +44,23 @@ class Pokedex:
         all_pokemon.sort(key=lambda p: locale.strxfrm(p.name.fr))
 
         return all_pokemon
+
+    def filter_pokemon(self, generation: list[str], types: list[str], evolutions: list[str]) -> list[Pokemon]:
+        filtered_pokemon: list[Pokemon] = self.all_pokemon
+
+        if generation:
+            filtered_pokemon = [
+                pokemon for pokemon in filtered_pokemon if str(pokemon.generation) in generation
+            ]
+
+        if types:
+            filtered_pokemon = [
+                pokemon for pokemon in filtered_pokemon if any(t["name"] in types for t in pokemon.types)
+            ]
+
+        if evolutions:
+            filtered_pokemon = [
+                pokemon for pokemon in filtered_pokemon if any(e in evolutions for e in pokemon.evolutions)
+            ]
+
+        return filtered_pokemon

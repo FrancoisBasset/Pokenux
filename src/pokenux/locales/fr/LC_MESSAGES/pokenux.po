@@ -22,3 +22,33 @@ msgstr "Langue du TCG"
 
 msgid "pokemon_language"
 msgstr "Langue des Pokémon"
+
+msgid "search_pokemon"
+msgstr "Rechercher un Pokémon"
+
+msgid "sort_by"
+msgstr "Trier par"
+
+msgid "by_number"
+msgstr "Par n°"
+
+msgid "by_generation"
+msgstr "Par génération"
+
+msgid "by_type"
+msgstr "Par type"
+
+msgid "by_evolution"
+msgstr "Par évolution"
+
+msgid "base"
+msgstr "Base"
+
+msgid "stage_1"
+msgstr "Niveau 1"
+
+msgid "stage_2"
+msgstr "Niveau 2"
+
+msgid "no_evolution"
+msgstr "Sans évolution"

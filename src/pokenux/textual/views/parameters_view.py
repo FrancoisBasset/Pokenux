@@ -10,18 +10,26 @@ from pokenux.textual.utils.translator import Translator
 
 
 class ParametersView(Vertical):
+    DEFAULT_CSS = """
+    ParametersView,
+    ParametersView > Vertical {
+        height: auto;
+        padding: 1 2;
+    }
+    """
+
     def on_mount(self):
         self.app_lang: Select = self.query_one("#app_lang", Select)
-        if UserData.config_file.get("app_lang"):
-            self.app_lang.value = UserData.config_file.get("app_lang")
+        if UserData.get_app_lang():
+            self.app_lang.value = UserData.get_app_lang()
 
         self.tcg_lang: Select = self.query_one("#tcg_lang", Select)
-        if UserData.config_file.get("tcg_lang"):
-            self.tcg_lang.value = UserData.config_file.get("tcg_lang")
+        if UserData.get_tcg_lang():
+            self.tcg_lang.value = UserData.get_tcg_lang()
 
         self.pokemon_lang: Select = self.query_one("#pokemon_lang", Select)
-        if UserData.config_file.get("pokemon_lang"):
-            self.pokemon_lang.value = UserData.config_file.get("pokemon_lang")
+        if UserData.get_pokemon_lang():
+            self.pokemon_lang.value = UserData.get_pokemon_lang()
 
     def compose(self) -> ComposeResult:
         with Vertical():
@@ -45,10 +53,10 @@ class ParametersView(Vertical):
 
     @on(Button.Pressed, "#save_button")
     def on_save_button_pressed(self):
-        UserData.config_file["app_lang"] = self.app_lang.value
-        UserData.config_file["tcg_lang"] = self.tcg_lang.value
-        UserData.config_file["pokemon_lang"] = self.pokemon_lang.value
-
+        UserData.set_app_lang(self.app_lang.value)
+        UserData.set_tcg_lang(self.tcg_lang.value)
+        UserData.set_pokemon_lang(self.pokemon_lang.value)
         UserData.save_config()
+        
         i18n.set_language(self.app_lang.value)
         Translator(self.app).translate_app()

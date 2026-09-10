@@ -36,8 +36,6 @@ class FetchingScreen(Screen[bool]):
     def fetch(self) -> None:
         worker = get_current_worker()
 
-        UserData.init()
-
         finished = UserData.download_assets(
             cancelled=lambda: worker.is_cancelled,
         )

@@ -1,6 +1,6 @@
 [project]
 name = "pokenux"
-version = "0.0.1"
+version = "1.0"
 description = "Pokénux is a modern Textual TUI to explore Pokémon and cards, play quizzes, and open boosters from your terminal."
 authors = [
     { name = "FrancoisBasset", email = "mrfrancoisbasset@gmail.com" },

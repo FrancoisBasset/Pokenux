@@ -1,5 +1,5 @@
 pkgname=pokenux
-pkgver=0.0.1
+pkgver=1.0
 pkgrel=1
 pkgdesc="Pokénux is a modern Textual TUI to explore Pokémon and cards, play quizzes, and open boosters from your terminal."
 arch=('any')

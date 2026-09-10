@@ -4,7 +4,7 @@ from pokenux.services.user_data import UserData
 class TcgLibrary:
     def __init__(self, language: str):
         self.language = language
-        self.series = UserData.get_series_from_jsons(language)
+        self.series = UserData.get_all_series(language)
 
     def get_serie_by_id(self, id: str):
         series = [serie for serie in self.series if serie.id == id]

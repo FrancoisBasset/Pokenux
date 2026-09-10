@@ -22,3 +22,33 @@ msgstr "TCG language"
 
 msgid "pokemon_language"
 msgstr "Pokémon language"
+
+msgid "search_pokemon"
+msgstr "Search Pokémon"
+
+msgid "sort_by"
+msgstr "Sort by"
+
+msgid "by_number"
+msgstr "By number"
+
+msgid "by_generation"
+msgstr "By generation"
+
+msgid "by_type"
+msgstr "By type"
+
+msgid "by_evolution"
+msgstr "By evolution"
+
+msgid "base"
+msgstr "Base"
+
+msgid "stage_1"
+msgstr "Stage 1"
+
+msgid "stage_2"
+msgstr "Stage 2"
+
+msgid "no_evolution"
+msgstr "No evolution"

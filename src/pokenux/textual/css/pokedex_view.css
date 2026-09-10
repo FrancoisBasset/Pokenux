@@ -1,0 +1,62 @@
+PokedexView > Horizontal {
+    height: auto;
+}
+
+PokedexView #pokemon_input {
+    width: 1fr;
+}
+
+PokedexView Select {
+    width: 25;
+}
+
+PokedexView > #pokedex_content {
+    height: 1fr;
+}
+
+PokedexView #pokemon_filters {
+    width: 42;
+    max-width: 50%;
+    height: 1fr;
+    padding: 0 1 0 0;
+}
+
+PokedexView #pokemon_filters Grid {
+    height: auto;
+    grid-rows: auto;
+}
+
+PokedexView #generations_grid {
+    grid-size: 3;
+}
+
+PokedexView #types_grid {
+    grid-size: 1;
+}
+
+PokedexView #evolutions_grid {
+    grid-size: 1;
+}
+
+PokedexView .filters_container {
+    height: auto;
+    padding: 0 1;
+    margin: 0 0 1 0;
+    border: round $primary;
+}
+
+PokedexView .filters_container Label {
+    width: 1fr;
+    margin-bottom: 1;
+    text-style: bold;
+    color: $accent;
+}
+
+PokedexView .filters_container Checkbox {
+    width: 1fr;
+    height: auto;
+    min-height: 1;
+    margin: 0;
+    padding: 1 0;
+    border: none;
+}
